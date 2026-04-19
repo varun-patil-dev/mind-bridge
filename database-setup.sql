@@ -1,0 +1,8 @@
+-- MindBridge now uses Firebase Firestore instead of SQL.
+-- Keep this file only as a pointer for older setup guides.
+--
+-- Use firestore.rules in this project for the database security rules.
+-- Firebase collections used by the app:
+--   profiles/{uid}
+--   problems/{problemId}
+--   responses/{responseId}

@@ -1,0 +1,55 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsUserId() {
+      return signedIn() && request.resource.data.user_id == request.auth.uid;
+    }
+
+    function ownsExistingDocument() {
+      return signedIn() && resource.data.user_id == request.auth.uid;
+    }
+
+    match /profiles/{userId} {
+      allow read: if true;
+      allow create, update: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.user_id == userId
+        && request.resource.data.username is string
+        && request.resource.data.username.size() >= 3
+        && request.resource.data.username.size() <= 40;
+    }
+
+    match /problems/{problemId} {
+      allow read: if true;
+      allow create: if ownsUserId()
+        && request.resource.data.content is string
+        && request.resource.data.content.size() > 0
+        && request.resource.data.content.size() <= 1000
+        && request.resource.data.response_count == 0;
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['response_count'])
+        && (
+          request.resource.data.response_count == resource.data.response_count + 1
+          || request.resource.data.response_count == resource.data.response_count - 1
+        )
+        && request.resource.data.response_count >= 0;
+      allow delete: if ownsExistingDocument();
+    }
+
+    match /responses/{responseId} {
+      allow read: if true;
+      allow create: if ownsUserId()
+        && request.resource.data.problem_id is string
+        && exists(/databases/$(database)/documents/problems/$(request.resource.data.problem_id))
+        && request.resource.data.content is string
+        && request.resource.data.content.size() > 0
+        && request.resource.data.content.size() <= 1000;
+      allow delete: if ownsExistingDocument();
+    }
+  }
+}

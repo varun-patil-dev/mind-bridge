@@ -1,0 +1,16 @@
+# MindBridge Project Dependencies
+# This is a Node.js/React/Firebase project. Install dependencies using:
+# npm install
+
+# Core React dependencies are managed in package.json/package-lock.json:
+# react
+# react-dom
+# react-router-dom
+# react-scripts
+
+# Backend services:
+# firebase
+
+# AI moderation env support:
+# REACT_APP_LLM_API_KEY
+# REACT_APP_LLM_API_URL
