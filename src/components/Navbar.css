@@ -1,92 +1,143 @@
+/* ══════════════════════════════════════════
+   NAVBAR — Neon Blue Dark Theme
+   ══════════════════════════════════════════ */
 .navbar {
-  background: rgba(13, 15, 20, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(10, 15, 28, 0.82);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--border);
   padding: 0;
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: background 0.3s;
+}
+
+/* Subtle top neon line */
+.navbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-glow), rgba(41,121,255,0.2), transparent);
+  pointer-events: none;
 }
 
 .navbar-container {
-  max-width: 1100px;
+  max-width: 1140px;
   margin: 0 auto;
   padding: 0 2rem;
-  height: 64px;
+  height: 66px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
 }
 
+/* Brand logo */
 .navbar-brand {
   color: var(--text-primary);
   text-decoration: none;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  letter-spacing: -0.01em;
+  gap: 0.6rem;
+  letter-spacing: -0.02em;
   transition: opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.navbar-brand span.brand-icon {
-  font-size: 1.4rem;
+.navbar-brand .brand-icon {
+  font-size: 1.35rem;
 }
 
-.navbar-brand:hover { opacity: 0.8; }
+.navbar-brand .brand-name {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
+.navbar-brand:hover { opacity: 0.85; }
+
+/* Nav links container */
 .navbar-links {
   display: flex;
   gap: 0.25rem;
   align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
+/* Base nav link */
 .nav-link {
   color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   transition: color 0.2s, background 0.2s;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.5rem 0.875rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   font-family: 'Inter', sans-serif;
   letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
   color: var(--text-primary);
-  background: var(--bg-card);
+  background: rgba(0, 229, 255, 0.06);
 }
 
 .nav-link.active {
-  color: var(--accent-light);
+  color: var(--accent);
+  background: var(--accent-glow-soft);
 }
 
+/* CTA pill button */
 .nav-link-cta {
-  color: white !important;
+  color: var(--bg-primary) !important;
   background: var(--gradient) !important;
-  border-radius: var(--radius-sm) !important;
-  font-weight: 600 !important;
-  box-shadow: 0 4px 12px var(--accent-glow);
+  border-radius: var(--radius-pill) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 16px rgba(0, 229, 255, 0.25);
   transition: transform 0.2s, box-shadow 0.2s !important;
+  padding: 0.5rem 1.125rem !important;
+  font-size: 0.875rem !important;
 }
 
 .nav-link-cta:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-accent) !important;
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 6px 24px rgba(0, 229, 255, 0.38) !important;
 }
 
+.nav-link-cta:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* Logout button */
 .logout-btn {
   font-family: 'Inter', sans-serif;
   color: var(--danger) !important;
+  opacity: 0.85;
 }
 
 .logout-btn:hover {
   background: var(--danger-bg) !important;
   color: var(--danger) !important;
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .navbar-container { padding: 0 1.25rem; }
+
+  .nav-link:not(.nav-link-cta):not(.logout-btn) {
+    display: none;
+  }
 }

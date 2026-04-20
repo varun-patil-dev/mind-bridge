@@ -1,9 +1,30 @@
+/* ══════════════════════════════════════════
+   RESPONSE INPUT — Neon Blue Dark Theme
+   ══════════════════════════════════════════ */
 .response-input-container {
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1.75rem;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 1.875rem;
   margin-top: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top neon bar */
+.response-input-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient);
+  opacity: 0.6;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .response-input-header {
@@ -14,11 +35,12 @@
   font-size: 1rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.01em;
 }
 
 .response-input-sub {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 
@@ -28,6 +50,7 @@
   gap: 1rem;
 }
 
+/* Textarea */
 .response-textarea {
   width: 100%;
   background: var(--bg-input);
@@ -36,12 +59,12 @@
   color: var(--text-primary);
   font-size: 0.9rem;
   font-family: 'Inter', sans-serif;
-  padding: 0.875rem 1rem;
+  padding: 0.9rem 1rem;
   resize: vertical;
-  line-height: 1.6;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  line-height: 1.65;
+  transition: border-color 0.25s, box-shadow 0.25s;
   box-sizing: border-box;
-  min-height: 100px;
+  min-height: 110px;
 }
 
 .response-textarea::placeholder { color: var(--text-muted); }
@@ -49,53 +72,77 @@
 .response-textarea:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  box-shadow: 0 0 0 3px var(--accent-glow), 0 0 16px var(--accent-glow-soft);
 }
 
-.response-textarea:disabled { opacity: 0.5; cursor: not-allowed; }
+.response-textarea:disabled { opacity: 0.45; cursor: not-allowed; }
 
+/* Footer row */
 .response-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .moderation-note {
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   color: var(--text-muted);
   font-style: italic;
   flex: 1;
+  min-width: 0;
 }
 
+/* Submit button — pill */
 .response-submit-btn {
   background: var(--gradient);
-  color: white;
+  color: var(--bg-primary);
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-sm);
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-pill);
   font-size: 0.875rem;
   font-weight: 700;
   font-family: 'Inter', sans-serif;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 12px var(--accent-glow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 18px rgba(0, 229, 255, 0.28);
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.response-submit-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  border-radius: inherit;
 }
 
 .response-submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-accent);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 28px rgba(0, 229, 255, 0.42);
 }
 
-.response-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.response-submit-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.99);
+}
 
+.response-submit-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Status messages */
 .error-message {
   background: var(--danger-bg);
-  color: #ff8099;
+  color: #FF8099;
   padding: 0.875rem 1rem;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 77, 109, 0.25);
+  border: 1px solid var(--danger-border);
   font-size: 0.875rem;
   line-height: 1.5;
   animation: fadeIn 0.25s ease;
@@ -103,10 +150,10 @@
 
 .success-message {
   background: var(--success-bg);
-  color: var(--teal);
+  color: var(--success);
   padding: 0.875rem 1rem;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(0, 201, 167, 0.25);
+  border: 1px solid var(--success-border);
   font-size: 0.875rem;
   animation: fadeIn 0.25s ease;
 }

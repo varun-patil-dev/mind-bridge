@@ -1,14 +1,32 @@
+/* ══════════════════════════════════════════
+   PROBLEM PAGE — Neon Blue Dark Theme
+   ══════════════════════════════════════════ */
 .problem-page-wrapper {
-  min-height: calc(100vh - 64px);
-  background: var(--bg-primary);
-  padding: 2.5rem 2rem;
+  min-height: calc(100vh - 66px);
+  background: transparent;
+  padding: 2.75rem 2rem;
+  position: relative;
+}
+
+.problem-page-wrapper::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.055) 0%, transparent 60%);
+  top: -100px;
+  left: -200px;
+  pointer-events: none;
 }
 
 .problem-page-container {
-  max-width: 740px;
+  max-width: 760px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
+/* Back button */
 .back-btn {
   display: inline-flex;
   align-items: center;
@@ -23,36 +41,56 @@
   padding: 0.4rem 0;
   margin-bottom: 2rem;
   transition: color 0.2s;
+  letter-spacing: 0.01em;
 }
 
-.back-btn:hover { color: var(--text-primary); }
+.back-btn:hover { color: var(--accent); }
 
+/* Detail card — glassmorphism */
 .problem-detail-card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 2rem;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-xl);
+  padding: 2.25rem;
   margin-bottom: 2rem;
-  animation: slideUp 0.35s ease;
-  border-top: 3px solid var(--accent);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(0,229,255,0.04);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Top neon accent bar */
+.problem-detail-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient);
+}
+
+/* Card header */
 .problem-detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
+  padding-bottom: 1.125rem;
   border-bottom: 1px solid var(--border);
 }
 
+/* Username + dot */
 .problem-detail-username {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   font-weight: 700;
-  color: var(--accent-light);
-  font-size: 0.9rem;
+  color: var(--accent);
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
 }
 
 .problem-detail-dot {
@@ -60,12 +98,14 @@
   height: 8px;
   background: var(--accent);
   border-radius: 50%;
-  box-shadow: 0 0 6px var(--accent);
+  box-shadow: 0 0 8px var(--accent), 0 0 16px rgba(0,229,255,0.3);
+  flex-shrink: 0;
 }
 
 .problem-detail-time {
   color: var(--text-muted);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 .problem-detail-meta {
@@ -74,77 +114,91 @@
   gap: 0.75rem;
 }
 
+/* Danger action button */
 .danger-text-btn {
   background: var(--danger-bg);
-  border: 1px solid rgba(255, 77, 109, 0.25);
-  color: #ff9aae;
+  border: 1px solid var(--danger-border);
+  color: #FF9AAE;
   border-radius: var(--radius-sm);
-  padding: 0.45rem 0.7rem;
+  padding: 0.4rem 0.7rem;
   font-family: 'Inter', sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .danger-text-btn:hover:not(:disabled) {
-  background: rgba(255, 77, 109, 0.16);
-  border-color: rgba(255, 77, 109, 0.42);
+  background: rgba(255, 77, 109, 0.14);
+  border-color: rgba(255, 77, 109, 0.45);
+  color: var(--danger);
 }
 
 .danger-text-btn:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.problem-error {
-  margin-bottom: 1rem;
-}
+.problem-error { margin-bottom: 1rem; }
 
+/* Full content */
 .problem-detail-content {
   color: var(--text-primary);
   font-size: 1.05rem;
-  line-height: 1.8;
+  line-height: 1.85;
   margin: 0;
 }
 
+/* Not found */
 .not-found {
   text-align: center;
   padding: 4rem 2rem;
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
 }
 
 .not-found h2 {
   color: var(--text-primary);
   margin-bottom: 1.5rem;
   font-size: 1.4rem;
+  font-weight: 800;
 }
 
+/* Login prompt card */
 .login-prompt {
   text-align: center;
   padding: 2rem;
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
   margin-top: 1.5rem;
   color: var(--text-secondary);
   font-size: 0.9rem;
-  line-height: 1.6;
+  line-height: 1.65;
+  box-shadow: var(--shadow-sm);
 }
 
 .login-prompt a {
-  color: var(--accent-light);
-  font-weight: 600;
+  color: var(--accent);
+  font-weight: 700;
   text-decoration: none;
+  transition: color 0.2s;
 }
 
-.login-prompt a:hover { text-decoration: underline; }
+.login-prompt a:hover {
+  color: var(--accent-light);
+  text-decoration: underline;
+}
 
 @media (max-width: 640px) {
   .problem-page-wrapper { padding: 1.5rem 1.25rem; }
-  .problem-detail-card { padding: 1.5rem; }
-  .problem-detail-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .problem-detail-card { padding: 1.625rem; }
+  .problem-detail-header { flex-direction: column; align-items: flex-start; gap: 0.625rem; }
   .problem-detail-meta { width: 100%; justify-content: space-between; }
 }

@@ -27,10 +27,11 @@ REACT_APP_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
 REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 REACT_APP_FIREBASE_APP_ID=your_firebase_app_id
 REACT_APP_FIREBASE_MEASUREMENT_ID=your_measurement_id_optional
-REACT_APP_LLM_PROVIDER=openrouter
+REACT_APP_LLM_PROVIDER=auto
 REACT_APP_LLM_MODEL=openai/gpt-4o-mini
 REACT_APP_LLM_API_KEY=your_llm_api_key_here
 REACT_APP_LLM_API_URL=https://openrouter.ai/api/v1/chat/completions
+REACT_APP_BLOCK_NEGATIVE_RESPONSES=true
 ```
 
 ## Run Locally
@@ -74,6 +75,8 @@ Replies are checked before they are saved to Firestore.
 - `POSITIVE` and `NEUTRAL` replies are allowed.
 - `NEGATIVE`, `HARMFUL`, and `CRISIS_RISK` replies are blocked.
 - If no LLM key is configured, a local keyword-based safety check still runs.
+- `REACT_APP_LLM_PROVIDER=auto` infers OpenRouter, OpenAI, Anthropic, or Gemini from the key or URL.
+- If `REACT_APP_LLM_MODEL` is a speech/audio/embedding model, the app falls back to a chat model.
 
 For Anthropic, use:
 
@@ -82,15 +85,19 @@ REACT_APP_LLM_PROVIDER=anthropic
 REACT_APP_LLM_MODEL=claude-3-haiku-20240307
 REACT_APP_LLM_API_URL=https://api.anthropic.com/v1/messages
 REACT_APP_LLM_API_KEY=your_anthropic_key
+REACT_APP_BLOCK_NEGATIVE_RESPONSES=true
 ```
 
-For an OpenAI-compatible endpoint, use:
+For OpenRouter, use:
 
 ```env
-REACT_APP_LLM_PROVIDER=openrouter
+REACT_APP_LLM_PROVIDER=auto
 REACT_APP_LLM_MODEL=openai/gpt-4o-mini
 REACT_APP_LLM_API_URL=https://openrouter.ai/api/v1/chat/completions
 REACT_APP_LLM_API_KEY=your_openrouter_key
+REACT_APP_BLOCK_NEGATIVE_RESPONSES=true
 ```
+
+For OpenAI, set `REACT_APP_LLM_API_URL=https://api.openai.com/v1/chat/completions` and use an OpenAI chat model such as `gpt-4o-mini`.
 
 For production, move LLM moderation to a backend or Firebase Function so the API key is not exposed in the browser.

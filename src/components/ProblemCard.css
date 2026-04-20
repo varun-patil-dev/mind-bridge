@@ -1,44 +1,74 @@
+/* ══════════════════════════════════════════
+   PROBLEM CARD — Neon Blue Dark Theme
+   ══════════════════════════════════════════ */
 .problem-card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1.5rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 1.625rem;
   cursor: pointer;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s, background 0.2s;
-  animation: fadeIn 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  animation: fadeIn 0.35s ease;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
+/* Left neon accent stripe */
 .problem-card::before {
   content: '';
   position: absolute;
   inset: 0 auto 0 0;
   width: 3px;
   background: var(--gradient);
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  transition: opacity 0.2s;
+  opacity: 0.6;
+}
+
+/* Ambient corner glow on hover */
+.problem-card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(0,229,255,0.07) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
 }
 
 .problem-card:hover {
-  border-color: var(--accent);
+  border-color: rgba(0, 229, 255, 0.25);
   background: var(--bg-card-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.36), 0 0 0 1px rgba(53,194,165,0.16);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,229,255,0.1);
 }
 
+.problem-card:hover::before { opacity: 1; }
+.problem-card:hover::after  { opacity: 1; }
+
+/* Header row */
 .problem-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.875rem;
+  margin-bottom: 1rem;
 }
 
+/* Username chip */
 .problem-username {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: var(--accent-light);
+  gap: 0.45rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--accent);
+  letter-spacing: 0.01em;
 }
 
 .problem-username-dot {
@@ -46,18 +76,21 @@
   height: 7px;
   background: var(--accent);
   border-radius: 50%;
-  display: inline-block;
+  box-shadow: 0 0 6px var(--accent);
+  flex-shrink: 0;
 }
 
 .problem-time {
   color: var(--text-muted);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
+  font-weight: 500;
 }
 
+/* Content preview */
 .problem-content {
   color: var(--text-primary);
-  line-height: 1.7;
-  font-size: 0.95rem;
+  line-height: 1.75;
+  font-size: 0.93rem;
   margin: 0 0 1.25rem 0;
   display: -webkit-box;
   -webkit-line-clamp: 4;
@@ -65,6 +98,7 @@
   overflow: hidden;
 }
 
+/* Footer row */
 .problem-footer {
   display: flex;
   align-items: center;
@@ -72,17 +106,25 @@
 }
 
 .response-count {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   font-weight: 500;
 }
 
+/* Read more link */
 .problem-read-more {
   font-size: 0.78rem;
-  color: var(--warm);
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  transition: opacity 0.25s;
 }
+
+.problem-card:hover .problem-read-more { opacity: 1; }

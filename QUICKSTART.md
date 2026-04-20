@@ -36,10 +36,11 @@ REACT_APP_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
 REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 REACT_APP_FIREBASE_APP_ID=your_firebase_app_id
 REACT_APP_FIREBASE_MEASUREMENT_ID=your_measurement_id_optional
-REACT_APP_LLM_PROVIDER=openrouter
+REACT_APP_LLM_PROVIDER=auto
 REACT_APP_LLM_MODEL=openai/gpt-4o-mini
 REACT_APP_LLM_API_KEY=your_llm_api_key_here
 REACT_APP_LLM_API_URL=https://openrouter.ai/api/v1/chat/completions
+REACT_APP_BLOCK_NEGATIVE_RESPONSES=true
 ```
 
 Restart the dev server every time you change `.env`.
@@ -60,4 +61,4 @@ Open `http://localhost:3000`.
 
 ## Notes
 
-AI moderation is optional, but a local safety check always runs. If `REACT_APP_LLM_API_KEY` is left as the placeholder, the app still blocks obvious negative or crisis-risk replies using local rules. For production, move the LLM call to a backend or Firebase Function so your API key is not exposed in the browser.
+AI moderation is optional, but a local safety check always runs. If `REACT_APP_LLM_API_KEY` is left as the placeholder, the app still blocks obvious negative or crisis-risk replies using local rules. `REACT_APP_LLM_PROVIDER=auto` supports OpenRouter, OpenAI, Anthropic, and Gemini-style keys. For production, move the LLM call to a backend or Firebase Function so your API key is not exposed in the browser.
