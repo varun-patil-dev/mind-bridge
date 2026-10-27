@@ -1,0 +1,173 @@
+/* Shared charcoal community theme for every route and reusable form. */
+:root {
+  --bg-primary: #0e1113;
+  --bg-secondary: #151819;
+  --bg-card: #151819;
+  --bg-card-hover: #1b2021;
+  --bg-input: #1a1d1e;
+  --bg-overlay: rgba(255, 255, 255, 0.025);
+  --border: #303637;
+  --border-focus: #6bb7c3;
+  --border-card: #2b3031;
+  --text-primary: #e7e9ea;
+  --text-secondary: #b8c0c2;
+  --text-muted: #858e91;
+  --accent: #78b9c2;
+  --accent-dim: #5e9ba4;
+  --accent-light: #a8d4d9;
+  --accent-glow: rgba(120, 185, 194, 0.16);
+  --accent-glow-soft: rgba(120, 185, 194, 0.08);
+  --accent2: #6798a0;
+  --accent2-glow: rgba(103, 152, 160, 0.16);
+  --gradient: linear-gradient(135deg, #8bc5cc 0%, #6798a0 100%);
+  --gradient-glow: linear-gradient(135deg, rgba(139, 197, 204, 0.14), rgba(103, 152, 160, 0.1));
+  --gradient-subtle: linear-gradient(135deg, rgba(139, 197, 204, 0.06), rgba(103, 152, 160, 0.04));
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.18);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.22);
+  --shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.28);
+  --shadow-accent: none;
+  --shadow-accent-lg: none;
+  --glass-blur: none;
+}
+
+body {
+  background: #0e1113;
+  color: var(--text-primary);
+}
+
+.auth-wrapper,
+.create-wrapper,
+.profile-wrapper,
+.problem-page-wrapper {
+  background: #0e1113;
+}
+
+.auth-wrapper::before,
+.auth-wrapper::after,
+.create-wrapper::before,
+.profile-wrapper::before,
+.problem-page-wrapper::before {
+  display: none;
+}
+
+.auth-card,
+.create-card,
+.account-info,
+.username-editor,
+.problem-detail-card,
+.response-input-container,
+.response-item,
+.login-prompt,
+.not-found,
+.no-responses {
+  background: #151819;
+  border: 1px solid #2b3031;
+  border-radius: 12px;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.auth-card::before,
+.create-card::before,
+.account-info::before,
+.username-editor::before,
+.problem-detail-card::before,
+.response-input-container::before {
+  display: none;
+}
+
+.auth-logo-text,
+.navbar-brand .brand-name {
+  background: none;
+  color: #f0f2f3;
+  -webkit-text-fill-color: currentColor;
+}
+
+.auth-tabs,
+.auth-tab.active {
+  background: #202526;
+  box-shadow: none;
+}
+
+.auth-tab.active {
+  color: #e7e9ea;
+  border: 1px solid #3b4445;
+}
+
+.auth-tab:hover:not(.active) { background: #1b2021; }
+
+.auth-input,
+.create-textarea,
+.create-topic-select,
+.response-textarea,
+.username-input {
+  background: #1a1d1e;
+  border: 1px solid #383e3f;
+  border-radius: 8px;
+  color: #e7e9ea;
+  box-shadow: none;
+}
+
+.auth-input:focus,
+.create-textarea:focus,
+.create-topic-select:focus,
+.response-textarea:focus,
+.username-input:focus {
+  border-color: #6b9da4;
+  box-shadow: 0 0 0 2px rgba(120, 185, 194, 0.12);
+}
+
+.auth-submit-btn,
+.submit-btn,
+.response-submit-btn,
+.update-btn {
+  background: #8bc5cc;
+  color: #102022;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.auth-submit-btn::before,
+.submit-btn::before,
+.response-submit-btn::before,
+.update-btn::before {
+  display: none;
+}
+
+.auth-submit-btn:hover:not(:disabled),
+.submit-btn:hover:not(:disabled),
+.response-submit-btn:hover:not(:disabled),
+.update-btn:hover:not(:disabled) {
+  background: #a0d2d7;
+  transform: none;
+  box-shadow: none;
+}
+
+.problem-detail-header { border-color: #303637; }
+.problem-detail-username,
+.response-username,
+.current-username strong { color: #9fcbd1; }
+.problem-detail-dot { background: #62b6c2; box-shadow: none; }
+.problem-detail-content,
+.response-content { color: #d8dcde; }
+.response-item { border-left: 2px solid #536f73; }
+.response-item:hover { border-left-color: #78b9c2; background: #1b2021; box-shadow: none; }
+.response-list-count { background: #202526; border-color: #343a3b; color: #aab2b4; }
+.info-item { border-color: #303637; }
+.back-btn:hover,
+.create-back-btn:hover,
+.login-prompt a:hover { color: #a8d4d9; }
+.login-prompt a { color: #8bc5cc; }
+
+button, input, select, textarea { font-family: inherit; }
+select { color-scheme: dark; }
+select option { color: #e7e9ea; background-color: #1a1d1e; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #78b9c2;
+  outline-offset: 2px;
+}

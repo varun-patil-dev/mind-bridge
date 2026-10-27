@@ -11,6 +11,5 @@
 # Backend services:
 # firebase
 
-# AI moderation env support:
-# REACT_APP_LLM_API_KEY
-# REACT_APP_LLM_API_URL
+# Moderation runs in api/moderate.js. Keep OPENROUTER_API_KEY server-only;
+# never define it as a React REACT_APP_* environment variable.

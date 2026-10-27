@@ -134,6 +134,18 @@
   opacity: 1;
 }
 
+/* Match the calmer charcoal feed surface. */
+.navbar {
+  background: rgba(14, 17, 19, 0.96);
+  border-bottom-color: #292d2e;
+}
+
+.navbar::after { display: none; }
+.navbar-container { max-width: 1600px; height: 60px; }
+.navbar-brand .brand-name { background: none; -webkit-text-fill-color: #f0f2f3; }
+.nav-link:hover { background: #222627; }
+.nav-link.active { color: #d7dadc; background: #242829; }
+
 @media (max-width: 480px) {
   .navbar-container { padding: 0 1.25rem; }
 

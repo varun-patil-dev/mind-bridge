@@ -10,6 +10,7 @@ import CreateProblem from './pages/CreateProblem';
 import ProblemPage from './pages/ProblemPage';
 import Profile from './pages/Profile';
 import './App.css';
+import './theme.css';
 
 function App() {
   const [user, setUser] = useState(null);

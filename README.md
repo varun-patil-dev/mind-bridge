@@ -1,103 +1,104 @@
 # MindBridge
 
-MindBridge is a React + Firebase mental health support app where people can share what they are going through, respond with supportive messages, and use anonymous calm usernames.
+MindBridge is an anonymous peer-support community. People can share a personal story, read community posts, and respond with supportive messages using a generated display name. It is intended to make it easier to ask for and offer everyday peer support; it is not a crisis service or a substitute for professional care.
 
-## Stack
+## Users and core workflows
 
-- React 18
-- Firebase Auth for email/password login
-- Cloud Firestore for profiles, stories, and responses
-- Optional LLM moderation for response safety
+- Create an account or sign in with email and password.
+- Browse the community feed and open a story with its responses.
+- Find stories by searching their text or anonymous username, filter by support topic, and sort by newest or response count.
+- Publish a story and receive responses.
+- Respond to a story; an OpenRouter model checks the reply's tone, warns about negative wording, and blocks replies classified as harmful or crisis-risk.
+- Edit the anonymous username, and delete your own stories or responses.
 
-## Firebase Setup
+Stories and responses are public to anyone who can reach the app. Accounts are required to publish, respond, and manage your own content. “Anonymous” means the interface uses a generated username; Firebase Auth still associates content with an account ID. Do not post information you need to keep private.
 
-1. Create a Firebase project at https://console.firebase.google.com.
-2. Add a Web App and copy its config.
-3. Enable Authentication -> Email/Password.
-4. Create a Firestore database.
-5. Paste `firestore.rules` into Firestore Rules and publish.
-6. If prompted, enable the Cloud Firestore API and wait a few minutes.
-7. Add Firebase config values to `.env`.
+## Technology and architecture
 
-```env
-REACT_APP_FIREBASE_API_KEY=your_firebase_api_key_here
-REACT_APP_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-REACT_APP_FIREBASE_PROJECT_ID=your-project-id
-REACT_APP_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-REACT_APP_FIREBASE_APP_ID=your_firebase_app_id
-REACT_APP_FIREBASE_MEASUREMENT_ID=your_measurement_id_optional
-REACT_APP_LLM_PROVIDER=auto
-REACT_APP_LLM_MODEL=openai/gpt-4o-mini
-REACT_APP_LLM_API_KEY=your_llm_api_key_here
-REACT_APP_LLM_API_URL=https://openrouter.ai/api/v1/chat/completions
-REACT_APP_BLOCK_NEGATIVE_RESPONSES=true
-```
+- React 18 and React Router provide the single-page interface and routes.
+- Firebase Authentication handles email/password identity.
+- Cloud Firestore stores profiles, stories, and responses.
+- Firestore Security Rules enforce signed-in ownership on writes and limit response-count updates.
+- The client calls the authenticated Vercel Function at `/api/moderate`. It validates the Firebase ID token, then sends response text to OpenRouter using `nvidia/nemotron-3-ultra-550b-a55b:free`. The OpenRouter key is a server-only environment variable. Response text is sent to OpenRouter for classification. Model classifications can be mistaken and are not a substitute for human moderation.
 
-## Run Locally
+The OpenRouter listing for this free model says not to send confidential or personal information and notes that requests may be logged. Since peer-support replies can contain sensitive personal information, the app warns users before they post. Review the provider's data terms before using this moderation flow with real user stories.
 
-```bash
-npm install
-npm start
-```
+### Data model
 
-Restart `npm start` after changing `.env`.
+- `profiles/{uid}`: `user_id`, `username`, `created_at`
+- `problems/{problemId}`: `content`, `topic`, `user_id`, `response_count`, `created_at`
+- `responses/{responseId}`: `problem_id`, `content`, `user_id`, `created_at`
 
-## Data Model
+The app stores story and response text in Firestore. Topics are a fixed list in `src/utils/topics.js` and are validated on story creation by Firestore Rules. Stories created before topics were added are displayed as “General support.” Search and sorting run over the stories already loaded in the browser; this is suitable for the current small feed, not large-scale indexing. Review and publish `firestore.rules` in the Firebase console before using a project. `database-setup.sql` is retained only as a pointer; this app uses Firestore, not SQL.
 
-- `profiles/{uid}`
-  - `user_id`
-  - `username`
-  - `created_at`
-- `problems/{problemId}`
-  - `content`
-  - `user_id`
-  - `response_count`
-  - `created_at`
-- `responses/{responseId}`
-  - `problem_id`
-  - `content`
-  - `user_id`
-  - `created_at`
+## Local setup
 
-## Scripts
+Requirements: Node.js and npm, plus a Firebase project with Email/Password Authentication and Cloud Firestore enabled.
 
-```bash
-npm start
-npm test -- --watchAll=false
-npm run build
-```
+1. Create a Firebase web app and copy its config values into `.env` (use `.env.example` as a template).
+2. Enable **Authentication → Email/Password** and create a Firestore database.
+3. Publish the rules in `firestore.rules` from **Firestore Database → Rules**.
+4. Install dependencies, then start the app and moderation API together:
 
-## Reply Moderation
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-Replies are checked before they are saved to Firestore.
+   Open `http://localhost:3000`. The dev script starts the React development server and a local API server that reads `OPENROUTER_API_KEY` from `.env`. `npm start` does the same. Check `http://localhost:3000/api/health`; it should return JSON with `"api":"ready"` and `"openRouterConfigured":true`.
 
-- `POSITIVE` and `NEUTRAL` replies are allowed.
-- `NEGATIVE`, `HARMFUL`, and `CRISIS_RISK` replies are blocked.
-- If no LLM key is configured, a local keyword-based safety check still runs.
-- `REACT_APP_LLM_PROVIDER=auto` infers OpenRouter, OpenAI, Anthropic, or Gemini from the key or URL.
-- If `REACT_APP_LLM_MODEL` is a speech/audio/embedding model, the app falls back to a chat model.
+Restart the development server after editing `.env`. Do not commit `.env` or put private service/API keys in any `REACT_APP_*` variable; Create React App embeds those values in the browser build. Firebase web configuration is client-side configuration, so protect data with Firestore rules and configure Firebase Auth authorized domains for deployment.
 
-For Anthropic, use:
+### Environment variables
 
-```env
-REACT_APP_LLM_PROVIDER=anthropic
-REACT_APP_LLM_MODEL=claude-3-haiku-20240307
-REACT_APP_LLM_API_URL=https://api.anthropic.com/v1/messages
-REACT_APP_LLM_API_KEY=your_anthropic_key
-REACT_APP_BLOCK_NEGATIVE_RESPONSES=true
-```
+Copy `.env.example` and provide the Firebase web app configuration:
 
-For OpenRouter, use:
+| Variable | Purpose |
+| --- | --- |
+| `REACT_APP_FIREBASE_API_KEY` | Firebase web app key |
+| `REACT_APP_FIREBASE_AUTH_DOMAIN` | Firebase Auth domain |
+| `REACT_APP_FIREBASE_PROJECT_ID` | Firebase project ID |
+| `REACT_APP_FIREBASE_STORAGE_BUCKET` | Firebase storage bucket |
+| `REACT_APP_FIREBASE_MESSAGING_SENDER_ID` | Firebase sender ID |
+| `REACT_APP_FIREBASE_APP_ID` | Firebase web app ID |
+| `REACT_APP_FIREBASE_MEASUREMENT_ID` | Optional Firebase measurement ID |
+| `OPENROUTER_API_KEY` | Server-only OpenRouter key used by `api/moderate.js`; never add the `REACT_APP_` prefix |
+| `OPENROUTER_MODEL` | OpenRouter model ID (defaults to `nvidia/nemotron-3-ultra-550b-a55b:free`) |
 
-```env
-REACT_APP_LLM_PROVIDER=auto
-REACT_APP_LLM_MODEL=openai/gpt-4o-mini
-REACT_APP_LLM_API_URL=https://openrouter.ai/api/v1/chat/completions
-REACT_APP_LLM_API_KEY=your_openrouter_key
-REACT_APP_BLOCK_NEGATIVE_RESPONSES=true
-```
+The root `.env` is ignored by Git. `OPENROUTER_API_KEY` has no `REACT_APP_` prefix, so the local API server can read it without embedding it in the browser bundle. For deployment, add all required values in Vercel Project Settings → Environment Variables; Vercel does not upload a local `.env` file automatically.
 
-For OpenAI, set `REACT_APP_LLM_API_URL=https://api.openai.com/v1/chat/completions` and use an OpenAI chat model such as `gpt-4o-mini`.
+## Deploy to Vercel
 
-For production, move LLM moderation to a backend or Firebase Function so the API key is not exposed in the browser.
+1. Revoke the OpenRouter key that was pasted into chat and create a replacement.
+2. Commit and push the project changes to GitHub (the existing repository is <https://github.com/varun-patil-dev/mind-bridge>).
+3. In Vercel, choose **Add New → Project**, import the GitHub repository, and select `mind-bridge` as the root directory if Vercel shows the parent repository directory.
+4. Use these build settings (also recorded in `vercel.json`):
+
+   - Framework preset: Create React App (or Other)
+   - Build command: `npm run build`
+   - Output directory: `build`
+   - Install command: `npm install`
+
+5. Add each Firebase `REACT_APP_FIREBASE_*` value and `OPENROUTER_API_KEY` under **Settings → Environment Variables**. Add the OpenRouter key as a sensitive variable for Production and Preview. Do not add it with a `REACT_APP_` prefix.
+6. Deploy. Vercel builds the React app and deploys `api/moderate.js` as a server-side function. Add the resulting `*.vercel.app` domain to Firebase Authentication → Authorized domains, and make sure the Firestore rules in `firestore.rules` are published.
+
+For CLI deployment, install the Vercel CLI separately, link the project, add environment variables to Vercel, then deploy with `vercel --prod`. Every time you change a Vercel environment variable, create a new deployment for it to take effect.
+
+The moderation endpoint requires a signed-in Firebase user and validates replies to 1000 characters. If OpenRouter is unreachable or returns an unusable result, the endpoint runs a small local phrase check for profanity and harmful language, then identifies that fallback in the reply form. This manual check is limited and should not be treated as comprehensive moderation.
+
+## Demo video plan
+
+Record a 3–5 minute walkthrough showing the target user and problem, account sign-in, browsing stories, publishing a story, posting a response, and managing a username or deleting owned content. Mention the limits of model-based tone checks. Add the shareable video link here before submission.
+
+## Project submission details
+
+- **Project:** MindBridge
+- **Student:** Add the submitting student's name.
+- **Problem:** People may want a low-friction way to share everyday challenges and receive peer encouragement.
+- **Repository:** <https://github.com/varun-patil-dev/mind-bridge>
+- **Deployment:** Add the accessible deployed application URL.
+- **Demo:** Add the accessible demo video URL.
+- **Stack:** React, React Router, Firebase Authentication, Cloud Firestore.
+- **Features:** Searchable topic-based feed, newest/most-response sorting, account-based stories and replies, generated usernames, ownership checks, and server-side tone warnings for replies.
+
+Before submitting, verify the repository, deployed app, and demo links in a private browser window, then complete the official form: <https://forms.gle/sBy4sfqyiRG2Zpom9>.

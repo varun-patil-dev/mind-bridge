@@ -94,6 +94,28 @@
   min-width: 0;
 }
 
+.moderation-warning {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid #8c7042;
+  border-radius: 8px;
+  background: #292319;
+  color: #f0d9a8;
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+
+.moderation-warning p { margin-top: 0.25rem; color: #d5c49f; }
+.moderation-fallback-note { padding: 0.7rem 0.85rem; border: 1px solid #48595b; border-radius: 8px; background: #1d2627; color: #b8cdcf; font-size: 0.78rem; line-height: 1.45; }
+.moderation-warning-actions { display: flex; flex-shrink: 0; gap: 0.5rem; }
+.moderation-warning-actions button { padding: 0.5rem 0.75rem; border-radius: 7px; font: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+.revise-response-btn { border: 1px solid #657577; background: transparent; color: #dce5e5; }
+.post-anyway-btn { border: 1px solid #9a7540; background: #9a7540; color: #17130c; }
+.moderation-warning-actions button:disabled { opacity: 0.5; cursor: not-allowed; }
+
 /* Submit button — pill */
 .response-submit-btn {
   background: var(--gradient);
@@ -156,4 +178,10 @@
   border: 1px solid var(--success-border);
   font-size: 0.875rem;
   animation: fadeIn 0.25s ease;
+}
+
+@media (max-width: 560px) {
+  .moderation-warning { flex-direction: column; }
+  .moderation-warning-actions { width: 100%; }
+  .moderation-warning-actions button { flex: 1; }
 }

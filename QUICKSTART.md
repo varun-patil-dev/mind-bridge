@@ -36,22 +36,19 @@ REACT_APP_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
 REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 REACT_APP_FIREBASE_APP_ID=your_firebase_app_id
 REACT_APP_FIREBASE_MEASUREMENT_ID=your_measurement_id_optional
-REACT_APP_LLM_PROVIDER=auto
-REACT_APP_LLM_MODEL=openai/gpt-4o-mini
-REACT_APP_LLM_API_KEY=your_llm_api_key_here
-REACT_APP_LLM_API_URL=https://openrouter.ai/api/v1/chat/completions
-REACT_APP_BLOCK_NEGATIVE_RESPONSES=true
+OPENROUTER_API_KEY=your_rotated_openrouter_key
+OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
 ```
 
-Restart the dev server every time you change `.env`.
+Keep the OpenRouter key unprefixed. Never name it `REACT_APP_OPENROUTER_API_KEY`; Create React App embeds `REACT_APP_*` values in the browser bundle.
 
 ## 5. Run
 
 ```bash
-npm start
+npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open `http://localhost:3000`. This starts the React app and local moderation API together. `npm start` does the same.
 
 ## Firestore Collections
 
@@ -61,4 +58,14 @@ Open `http://localhost:3000`.
 
 ## Notes
 
-AI moderation is optional, but a local safety check always runs. If `REACT_APP_LLM_API_KEY` is left as the placeholder, the app still blocks obvious negative or crisis-risk replies using local rules. `REACT_APP_LLM_PROVIDER=auto` supports OpenRouter, OpenAI, Anthropic, and Gemini-style keys. For production, move the LLM call to a backend or Firebase Function so your API key is not exposed in the browser.
+Replies are checked by the moderation handler in `api/moderate.js`. The local API validates the user's Firebase ID token and sends reply text to OpenRouter. Negative replies show a revise-or-post warning; harmful and crisis-risk replies are blocked. If OpenRouter is unavailable, a limited local phrase check screens terms such as profanity, “die,” and “suicide,” and the form tells the user when it was used. Reply text is sent to OpenRouter for classification. For production, configure `OPENROUTER_API_KEY` in Vercel Project Settings → Environment Variables. Vercel does not upload the local `.env` file automatically.
+
+To deploy to Vercel:
+
+```bash
+vercel login
+vercel link
+vercel --prod
+```
+
+Before deploying, add the Firebase `REACT_APP_FIREBASE_*` values and a **new rotated** `OPENROUTER_API_KEY` to the Vercel project environment variables.

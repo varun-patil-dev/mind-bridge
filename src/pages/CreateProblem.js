@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebaseClient';
+import { TOPICS } from '../utils/topics';
 import './CreateProblem.css';
 
 const MAX_CHARS = 1000;
@@ -28,6 +29,7 @@ const getFirestoreErrorMessage = (err) => {
 
 const CreateProblem = ({ user }) => {
   const [content, setContent] = useState('');
+  const [topic, setTopic] = useState(TOPICS[0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ const CreateProblem = ({ user }) => {
     try {
       const problemRef = await addDoc(collection(db, 'problems'), {
         content: content.trim(),
+        topic,
         user_id: user.uid,
         response_count: 0,
         created_at: serverTimestamp(),
@@ -72,6 +75,18 @@ const CreateProblem = ({ user }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="create-form">
+            <div>
+              <label className="create-label" htmlFor="create-topic">Choose a topic</label>
+              <select
+                id="create-topic"
+                className="create-topic-select"
+                value={topic}
+                onChange={(event) => setTopic(event.target.value)}
+                disabled={loading}
+              >
+                {TOPICS.map((item) => <option key={item} value={item}>{item}</option>)}
+              </select>
+            </div>
             <div>
               <label className="create-label" htmlFor="create-textarea">What's on your mind?</label>
               <textarea

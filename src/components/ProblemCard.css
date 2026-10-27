@@ -86,6 +86,18 @@
   font-weight: 500;
 }
 
+.problem-topic {
+  margin-left: auto;
+  margin-right: 0.75rem;
+  color: var(--text-secondary);
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.65rem;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
 /* Content preview */
 .problem-content {
   color: var(--text-primary);
@@ -128,3 +140,34 @@
 }
 
 .problem-card:hover .problem-read-more { opacity: 1; }
+
+/* Compact feed rows, keeping the focus on what the person shared. */
+.problem-card {
+  padding: 18px 5px 16px;
+  border: 0;
+  border-bottom: 1px solid #303435;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  animation: none;
+}
+
+.problem-card::before,
+.problem-card::after { display: none; }
+.problem-card:hover { transform: none; border-color: #3d4446; background: rgba(255, 255, 255, 0.025); box-shadow: none; }
+.problem-header { justify-content: flex-start; gap: 9px; margin-bottom: 8px; }
+.problem-username { color: #9fcbd1; font-size: 0.76rem; }
+.problem-username-dot { width: 6px; height: 6px; background: #62b6c2; box-shadow: none; }
+.problem-topic { margin: 0; padding: 2px 7px; border-color: #394244; background: #1b2223; color: #aebabc; font-size: 0.65rem; }
+.problem-time { margin-left: auto; color: #858e91; font-size: 0.7rem; }
+.problem-content { margin-bottom: 10px; color: #d8dcde; font-size: 0.88rem; line-height: 1.65; }
+.problem-footer { justify-content: flex-start; gap: 14px; }
+.response-count { padding: 4px 9px; border-radius: 16px; background: #202526; color: #b8c0c2; font-size: 0.72rem; }
+.problem-read-more { opacity: 1; color: #9ea8ab; background: none; -webkit-text-fill-color: currentColor; font-size: 0.72rem; }
+
+@media (max-width: 480px) {
+  .problem-card { padding: 15px 4px; }
+  .problem-topic { display: none; }
+  .problem-content { -webkit-line-clamp: 5; }
+}

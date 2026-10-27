@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { timeAgo } from '../utils/timeAgo';
+import { getProblemTopic } from '../utils/topics';
 import './ProblemCard.css';
 
 const ProblemCard = ({ problem }) => {
@@ -13,6 +14,7 @@ const ProblemCard = ({ problem }) => {
           <span className="problem-username-dot" />
           {problem.profiles?.username || 'Anonymous'}
         </span>
+        <span className="problem-topic">{getProblemTopic(problem)}</span>
         <span className="problem-time">{timeAgo(problem.created_at)}</span>
       </div>
 
